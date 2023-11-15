@@ -36,7 +36,7 @@
 .story h2::after {
     content: url(./images/Sunflower.png);
     position: absolute;
-    left: 0.7em;
+    left: -5.39em;
     top: 6em;
     animation: rotate 5s linear infinite;
 }
@@ -565,4 +565,35 @@ video {
     text-align: center;
     margin-top: 8em;
     margin-bottom: 4em;
+}
+
+
+/* Animation FadeIn-Up pour chaque mot */
+.story h2,
+.story h3,
+#studio h2 {
+    opacity: 1;
+    /* Assurez-vous que le titre est visible avant l'animation */
+}
+
+.story h2 .word,
+.story h3 .word,
+#studio h2 .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1.5s forwards;
+}
+
+/* Animation fade in */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
