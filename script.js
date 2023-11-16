@@ -91,3 +91,28 @@ function toggleMenu() {
         menuToggle.style.display = "flex";
     }
 }
+// Fonction pour gérer le défilement et créer l'effet de parallaxe
+function parallaxEffect() {
+    var banner = document.querySelector('.banner');
+    var logo = document.querySelector('.logo');
+
+    window.addEventListener('scroll', function () {
+        var scrollPosition = window.pageYOffset;
+        var bannerHeight = banner.offsetHeight;
+        var logoHeight = logo.offsetHeight;
+        var maxScroll = bannerHeight - logoHeight - 50;
+
+        if (scrollPosition < maxScroll) {
+            logo.style.top = 50 + scrollPosition * 0.1 + '%';
+        } else {
+            logo.style.top = 50 + maxScroll * 0.1 + '%';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    parallaxEffect();
+});
+
+
+
