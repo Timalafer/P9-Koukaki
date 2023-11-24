@@ -1,78 +1,44 @@
-// Fonction pour séparer le texte en mots
-function splitTextIntoWords(text) {
-    return text.split(' ');
-}
+// Initialisation de Skrollr
+var s = skrollr.init();
+s.refresh(); //
 
-// Fonction pour animer les titres avec ScrollR
-function animateTitlesWithScrollR() {
-    // Sélectionne tous les éléments de titre à animer dans la section .story et #studio h2
-    var animateElements = document.querySelectorAll('.story h2, .story h3, #studio h2');
+// Initialisation du carrousel Swiper
+var swiper = new Swiper('.swiper-container', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    initialSlide: 0,
+    coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: false,
+    },
+});
 
-    animateElements.forEach((element) => {
-        // Sépare le texte en mots
-        var words = splitTextIntoWords(element.textContent);
-        // Nettoie le contenu actuel pour éviter les problèmes
-        element.innerHTML = '';
-
-        // Crée des spans pour chaque mot du titre avec un espace entre les mots
-        words.forEach((word, index) => {
-            const span = document.createElement('span');
-            span.textContent = word;
-            span.classList.add('word');
-            element.appendChild(span);
-
-            // Ajoute un espace après chaque mot, sauf pour le dernier mot
-            if (index < words.length - 1) {
-                element.appendChild(document.createTextNode(' '));
-            }
-        });
-
-        // Définit les animations pour chaque titre à l'aide de ScrollR
-        var data = {};
-        data['data-0'] = 'opacity: 0; transform: translateY(20px);';
-        data['data-500'] = 'opacity: 1; transform: translateY(0);';
-        element.setAttribute('data-0', 'opacity: 0; transform: translateY(20px);');
-        element.setAttribute('data-500', 'opacity: 1; transform: translateY(0);');
-    });
-
-    // Rafraîchit skrollr après avoir défini les animations
-    var s = skrollr.init();
-    s.refresh();
-}
-
-// Fonction exécutée lorsque le document est prêt
+// Fonction pour animer les titres avec ScrollR et autres initialisations au chargement du document
 jQuery(document).ready(function () {
-    // Cache puis fait apparaître la section avec un fondu au chargement de la page
     $('section').hide().fadeIn(2000);
 
-    // Initialise le carrousel Swiper
-    var swiper = new Swiper('.swiper-container', {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        initialSlide: 0,
-        coverflowEffect: {
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-        },
-    });
-
-    // Appelle la fonction pour animer les titres avec ScrollR
-    animateTitlesWithScrollR();
-
-    // Gère le clic sur les liens du menu burger
     var links = document.querySelectorAll(".link");
 
     links.forEach(blk => {
         blk.addEventListener('click', () => {
             var menuContainer = document.getElementById("burger-menu");
             menuContainer.classList.toggle("active");
-        })
-    })
+        });
+    });
+
+    var menuLinks = document.querySelectorAll('.burger-menu-items li a');
+
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            var menuToggle = document.querySelector('.menu-toggle');
+            menuToggle.classList.remove('disabled');
+        });
+    });
 });
 
 // Fonction pour basculer l'état du menu burger
@@ -81,38 +47,98 @@ function toggleMenu() {
     menuContainer.classList.toggle("active");
 
     var siteTitle = document.querySelector(".site-title");
-    siteTitle.style.display = "block";
+    siteTitle.style.display = menuContainer.classList.contains("active") ? "block" : "flex";
 
-    var menuToggle = document.querySelector(".menu-toggle");
+    var closeIcon = document.querySelector('.close-btn');
+    var menuToggle = document.querySelector('.menu-toggle');
 
-    if (menuContainer.classList.contains("active")) {
-        menuToggle.style.display = "none";
+    if (menuContainer.classList.contains('active')) {
+        closeIcon.style.display = 'inline';
+        menuToggle.classList.add('disabled');
     } else {
-        menuToggle.style.display = "flex";
+        closeIcon.style.display = 'none';
+        menuToggle.classList.remove('disabled');
     }
 }
-// Fonction pour gérer le défilement et créer l'effet de parallaxe
-function parallaxEffect() {
+
+
+//paralaxe banner 
+
+function parallaxBannerAndLogo() {
     var banner = document.querySelector('.banner');
     var logo = document.querySelector('.logo');
 
-    window.addEventListener('scroll', function () {
-        var scrollPosition = window.pageYOffset;
-        var bannerHeight = banner.offsetHeight;
-        var logoHeight = logo.offsetHeight;
-        var maxScroll = bannerHeight - logoHeight - 50;
+    if (window.innerWidth > 768) { // Garder l'effet pour les écrans plus larges que 768px
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var bannerHeight = banner.offsetHeight;
+            var logoHeight = logo.offsetHeight;
+            var maxScroll = bannerHeight - logoHeight - 50;
 
-        if (scrollPosition < maxScroll) {
-            logo.style.top = 50 + scrollPosition * 0.1 + '%';
-        } else {
-            logo.style.top = 50 + maxScroll * 0.1 + '%';
-        }
-    });
+            if (scrollPosition < maxScroll) {
+                logo.style.top = 50 + scrollPosition * 0.1 + '%';
+            } else {
+                logo.style.top = 50 + maxScroll * 0.1 + '%';
+            }
+        });
+    } else {
+        // Pour les écrans plus petits que 768px, désactiver l'effet de parallaxe
+        logo.style.top = ''; // Réinitialiser la propriété CSS 'top' du logo
+        // Ou ajuster la position du logo selon votre souhait pour les appareils mobiles ou les tablettes
+    }
 }
 
+
+
+
+// Appel de l'effet de parallaxe pour la bannière et le logo après le chargement initial du document et lors du défilement
 document.addEventListener('DOMContentLoaded', function () {
-    parallaxEffect();
+    parallaxBannerAndLogo();
+
+    window.addEventListener('scroll', function () {
+        parallaxBannerAndLogo();
+    });
 });
 
+var controller = new ScrollMagic.Controller();
+var tweenSmallCloud = gsap.to(".cloud-small", 1, { x: "-300px" });
+var tweenLargeCloud = gsap.to(".cloud-large", 1, { x: "-300px" });
+
+var sceneSmallCloud = new ScrollMagic.Scene({
+    triggerElement: "#place",
+    duration: "100%"
+})
+    .setTween(tweenSmallCloud)
+    .addTo(controller);
+
+var sceneLargeCloud = new ScrollMagic.Scene({
+    triggerElement: "#place",
+    duration: "100%"
+})
+    .setTween(tweenLargeCloud)
+    .addTo(controller);
 
 
+/* Mise en place des titres */
+
+window.addEventListener('DOMContentLoaded', function () {
+    var words = document.querySelectorAll('.word');
+
+    words.forEach(function (word, index) {
+        word.style.animationDelay = (index * 0.2) + 's';
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            } else {
+                entry.target.style.animationPlayState = 'paused';
+            }
+        });
+    });
+
+    words.forEach(function (word) {
+        observer.observe(word);
+    });
+});

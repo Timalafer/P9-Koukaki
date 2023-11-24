@@ -10,16 +10,24 @@ function theme_enqueue_styles()
 
 function enqueue_custom_scripts()
 {
-    wp_enqueue_script('jquery1','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'); // Enfile jQuery
-    wp_enqueue_script('skroller-script', get_stylesheet_directory_uri() . '/js/skrollr.min.js', array('jquery'), '1.0', true); // Enfile un script personnalisé
-   
+    // Enfiler jQuery
+    wp_enqueue_script('jquery1', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'); 
+
+    // Enfiler GSAP
+    wp_enqueue_script('gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js', array(), '3.9.1', true);
+
+    // Enfiler ScrollMagic et son plugin AnimationGSAP après GSAP
+    wp_enqueue_script('scrollmagic', 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js', array('gsap'), '2.0.7', true);
+    wp_enqueue_script('animation-gsap', 'https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js', array('gsap', 'scrollmagic'), '2.0.7', true);
+
+    // Enfiler skrollr, swiper, et votre script personnalisé
+    wp_enqueue_script('skroller-script', get_stylesheet_directory_uri() . '/js/skrollr.min.js', array('jquery'), '1.0', true);
     wp_enqueue_script('swiper-script', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), null, true);
     wp_enqueue_style('swiper-style', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), null, 'all');
-    wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/script.js', array('jquery'), '1.0', true); // Enfile un script personnalisé
+    wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/script.js', array('jquery'), '1.0', true);
 }
 
-
-add_action( 'wp_enqueue_scripts','enqueue_custom_scripts');
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
 
 // Sync customizer options with parent theme

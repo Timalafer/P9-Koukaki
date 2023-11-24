@@ -1,6 +1,5 @@
 <div class="swiper swiper-container">
-<h3 data-600="background-position:center 200px; margin-top:100px opacity: 0; " data-1000="background-position:center 0px; margin-top:0px opacity: 1;" class="skrollable skrollable-after">Les personnages</h3>
-    <div class="swiper-wrapper">
+<h3><span class="word animatedFadeInUp fadeInUp one">Les</span>&nbsp;<span class="word animatedFadeInUp fadeInUp two">personnages</span></h3>    <div class="swiper-wrapper">
         <?php
         while ($characters_query->have_posts()) {
             $characters_query->the_post();
