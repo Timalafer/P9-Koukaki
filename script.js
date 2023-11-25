@@ -22,6 +22,7 @@ var swiper = new Swiper('.swiper-container', {
 jQuery(document).ready(function () {
     $('section').hide().fadeIn(2000);
 
+
     var links = document.querySelectorAll(".link");
 
     links.forEach(blk => {

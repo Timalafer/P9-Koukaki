@@ -85,7 +85,6 @@
 }
 
 /*rotate flowers*/
-/* Définition des keyframes pour l'animation de rotation */
 
 @keyframes rotate {
     from {
@@ -127,6 +126,7 @@
   
     img {
       width: 41%;
+      margin-top: -25%;
     }
   
     &::before {
@@ -159,12 +159,15 @@
   .logo {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 30%;
     transform: translate(-50%, -50%);
     z-index: 1;
     max-width: 80%;
     max-height: 80%;
+    animation: float 2s ease-in-out infinite;
+  
   }
+
   
   @keyframes parallaxScroll {
     0% {
@@ -731,8 +734,12 @@
     }
 
 .cat{
-    top: 167px;
+     top: 167px;
     left: 20px; 
 
-}      
+}     
+ul, ol {
+    margin: 0 5em 1.5em 3em;
+} 
+
 } 
